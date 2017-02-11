@@ -83,24 +83,35 @@ class DBOperations extends DBConnectivity {
     val statement = connectObject.createStatement();
     val resultSet = statement.executeQuery(sql);
 
-    val count = 0;
+    val processData = readRecords(resultSet, table, List())
 
-    while (resultSet.next()) {
-      try {
-        table match {
-          case "Employee" => ???
-          case "Department" => ???
-          case "Client" => ???
-          case "Project" => ???
-          case _ => false
-
+    def readRecords(resultSet: ResultSet, table : String, rawData : List[Operations]): List[Operations] ={
+      if (resultSet.next) {
+        try {
+          table match {
+            case "Employee" => readRecords(resultSet, table, rawData :+ Employee(resultSet.getInt("empID"),
+                                resultSet.getString("name"), resultSet.getString("address"),
+                                resultSet.getInt("phone"), resultSet.getInt("deptID"), resultSet.getInt("projectID")))
+            case "Department" => readRecords(resultSet, table, rawData :+ Department(resultSet.getInt("deptID"),
+                                  resultSet.getString("name")))
+            case "Client" => readRecords(resultSet, table, rawData :+ Client(resultSet.getInt("clientID"),
+                             resultSet.getInt("projectID"), resultSet.getString("name"),
+                             resultSet.getString("address")))
+            case "Project" => readRecords(resultSet, table, rawData :+ Project(resultSet.getInt("projectID"),
+                              resultSet.getInt("deptID"), resultSet.getString("name"),
+                              resultSet.getInt("clientID")))
+            case _ => false
+          }
+        }
+        catch {
+          case ex: Exception => false
         }
       }
-      catch {
-        case ex: Exception => false
-      }
-
+      else
+        List()
     }
+
+
   }
 
 }
