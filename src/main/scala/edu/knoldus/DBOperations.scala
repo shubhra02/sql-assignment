@@ -74,6 +74,7 @@ class DBOperations extends DBConnectivity {
     }
 
   }
+<<<<<<< HEAD
 
   def deleteTable(connectObject: Connection, table: String, id: Int): Boolean = {
     val statement = connectObject.createStatement
@@ -133,9 +134,74 @@ class DBOperations extends DBConnectivity {
         resultSet.getString("address"))
     }
 
+=======
+
+  def deleteTable(connectObject: Connection, table: String, id: Int): Boolean = {
+    val statement = connectObject.createStatement
+    try {
+      if (statement.executeUpdate(s"DELETE FROM $table Where id=$id") > 0)
+        true
+      else
+        false
+    }
+    catch {
+      case ex: Exception => false
+    }
+  }
+
+
+    def retrieveFromTable(connectObject: Connection, table: String): List[Operations] = {
+      val sql = s"SELECT * FROM $table"
+      val statement = connectObject.createStatement
+      val resultSet: ResultSet = statement.executeQuery(sql)
+
+      @tailrec
+      def readRecords(resultSet: ResultSet,
+                      table: String,
+                      rawData: List[Operations] = Nil): List[Operations] = {
+        if (!resultSet.next()) {
+          rawData
+        } else {
+          table match {
+            case "Employee" => readRecords(resultSet, table, rawData :+ getEmployeeData(resultSet))
+            case "Department" => readRecords(resultSet, table, rawData :+ getDepartmentData(resultSet))
+            case "Client" => readRecords(resultSet, table, rawData :+ getClientData(resultSet))
+            case "Project" => readRecords(resultSet, table, rawData :+ getProjectData(resultSet))
+            case _ => List()
+          }
+        }
+      }
+
+      readRecords(resultSet, table)
+    }
+
+    def getEmployeeData(resultSet: ResultSet): Operations = {
+      Employee(resultSet
+        .getInt("empID"),
+        resultSet.getString("name"), resultSet.getString("address"),
+        resultSet.getInt("phone"), resultSet.getInt("deptID"),
+        resultSet.getInt("projectID"))
+    }
+
+    def getDepartmentData(resultSet: ResultSet): Operations = {
+      Department(resultSet.getInt("deptID"),
+        resultSet.getString("name"))
+    }
+
+    def getClientData(resultSet: ResultSet): Operations = {
+      Client(resultSet.getInt("clientID"),
+        resultSet.getInt("projectID"), resultSet.getString("name"),
+        resultSet.getString("address"))
+    }
+
+>>>>>>> 40f4c094b40ae6d76fd07b0a08a82a6faebfa572
     def getProjectData(resultSet: ResultSet): Operations = {
       Project(resultSet.getInt("projectID"),
         resultSet.getInt("deptID"), resultSet.getString("name"),
         resultSet.getInt("clientID"))
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 40f4c094b40ae6d76fd07b0a08a82a6faebfa572
