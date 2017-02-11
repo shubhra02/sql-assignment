@@ -5,7 +5,7 @@ import java.sql.Connection
 import org.scalatest.FunSuite
 
 
-class testDBoperationObjects extends FunSuite {
+class testDBOperations extends FunSuite {
   val operationObject = new DBOperations
   val connection = new DBConnectivity
   val user = "root"
@@ -28,14 +28,14 @@ class testDBoperationObjects extends FunSuite {
     */
 
   test("throw an exception on wrong query syntax and thus return false on failing of table creation Department") {
-    val query = "table Department (id Int(5) Primary key NOT NULL, name varchar(20))"
+    val query = "table Department (deptID Int(5) Primary key NOT NULL, name varchar(20))"
     assert(operationObject.createTable(connectionObject, query) == false)
 
   }
 
 
-  test("to check the table creation Project and it should return true upon table creation Project") {
-    val query = "Create table Project (projectID Int(5) Primary key NOT NULL, deptID Int(5), name varchar(20), clientID Int(5),)"
+  test("to check the table creation Project and it should return true upon table creation Department") {
+    val query = "Create table Department (deptID Int(5) Primary key NOT NULL, name varchar(20))"
     assert(operationObject.createTable(connectionObject, query).isInstanceOf[Boolean] == true)
 
   }
@@ -47,7 +47,7 @@ class testDBoperationObjects extends FunSuite {
 
   }
 
-  test("to check the table creation Department and it should return true upon table creation Department") {
+  test("to check the table creation Department and it should return true upon table creation Project") {
     val query = "Create table Project (projectID Int(5) Primary key NOT NULL, deptID Int(5), name varchar(20), clientID Int(5))"
     assert(operationObject.createTable(connectionObject, query).isInstanceOf[Boolean] == true)
 
@@ -87,8 +87,28 @@ class testDBoperationObjects extends FunSuite {
   /**
     * test cases for retrieval of data from tables tables
     */
+  test("to check the data fetched from the table Employee") {
+    val dataLength = operationObject.retrieveFromTable(connectionObject, "Employee").size
+    assert(dataLength >= 0)
+  }
+  test("to check the data fetched from the table Department") {
+    val dataLength = operationObject.retrieveFromTable(connectionObject, "Department").size
+    assert(dataLength >= 0)
+  }
+  test("to check the data fetched from the table Project") {
+    val dataLength = operationObject.retrieveFromTable(connectionObject, "Project").size
+    assert(dataLength >= 0)
+  }
+  test("to check the data fetched from the table Client") {
+    val dataLength = operationObject.retrieveFromTable(connectionObject, "Client").size
+    assert(dataLength >= 0)
+  }
 
+  /**
+    * test cases for updation of data in tables
+    */
 
 
 }
+
 
