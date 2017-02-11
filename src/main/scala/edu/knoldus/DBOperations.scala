@@ -83,8 +83,8 @@ class DBOperations extends DBConnectivity {
     val statement = connectObject.createStatement();
     val resultSet = statement.executeQuery(sql);
 
-    val processData = readRecords(resultSet, table, List())
-
+    
+    @tailrec
     def readRecords(resultSet: ResultSet, table : String, rawData : List[Operations]): List[Operations] ={
       if (resultSet.next) {
         try {
@@ -111,7 +111,7 @@ class DBOperations extends DBConnectivity {
         List()
     }
 
-
+   val processData = readRecords(resultSet, table, List())
   }
 
 }
