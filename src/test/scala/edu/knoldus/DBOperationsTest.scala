@@ -7,6 +7,7 @@ import org.scalatest.FunSuite
 
 class DBOperationsTest extends FunSuite {
   val operationObject = new DBOperations
+  val generalOperationsObject = new GeneralOperations
   val connection = new DBConnectivity
   val eID = 111
   val pID = 311
@@ -136,6 +137,17 @@ class DBOperationsTest extends FunSuite {
     assert(operationObject.deleteTable(connectionObject,"Employee", eID).isInstanceOf[Boolean])
   }
 
-
+  test("to check if the data is retrieved from Employee table with department ID") {
+    val dataLength = generalOperationsObject.getEmployeeByDept(connectionObject, dID).size
+    assert(dataLength >= 0)
+  }
+  test("to check if the data is retrieved from Employee table with project ID") {
+    val dataLength = generalOperationsObject.getEmployeeByProject(connectionObject, pID).size
+    assert(dataLength >= 0)
+  }
+  test("to check if the data is retrieved from Client table with project ID") {
+    val dataLength = generalOperationsObject.getClientByProject(connectionObject, pID).size
+    assert(dataLength >= 0)
+  }
 }
 
