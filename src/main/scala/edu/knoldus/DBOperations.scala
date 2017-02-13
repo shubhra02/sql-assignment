@@ -74,7 +74,7 @@ class DBOperations extends DBConnectivity {
     }
 
   }
-<<<<<<< HEAD
+
 
   def deleteTable(connectObject: Connection, table: String, id: Int): Boolean = {
     val statement = connectObject.createStatement
@@ -134,7 +134,7 @@ class DBOperations extends DBConnectivity {
         resultSet.getString("address"))
     }
 
-=======
+
 
   def deleteTable(connectObject: Connection, table: String, id: Int): Boolean = {
     val statement = connectObject.createStatement
@@ -194,14 +194,13 @@ class DBOperations extends DBConnectivity {
         resultSet.getString("address"))
     }
 
->>>>>>> 40f4c094b40ae6d76fd07b0a08a82a6faebfa572
+
     def getProjectData(resultSet: ResultSet): Operations = {
       Project(resultSet.getInt("projectID"),
         resultSet.getInt("deptID"), resultSet.getString("name"),
         resultSet.getInt("clientID"))
     }
-<<<<<<< HEAD
 }
-=======
+
 }
->>>>>>> 40f4c094b40ae6d76fd07b0a08a82a6faebfa572
+
